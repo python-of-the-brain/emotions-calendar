@@ -4,7 +4,6 @@ from typing import Optional
 from pydantic import BaseSettings, Field, PostgresDsn, validator
 
 
-
 class Settings(BaseSettings):
     PROJECT_NAME: str = Field(default='Python головного мозга')
     DEBUG: bool = Field(default=True)

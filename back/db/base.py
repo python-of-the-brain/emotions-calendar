@@ -1,7 +1,6 @@
 from sqlalchemy.orm import as_declarative
 from sqlalchemy import Column, Integer, MetaData
 
-
 __all__ = ['Base']
 
 convention = {
