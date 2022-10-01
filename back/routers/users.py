@@ -1,21 +1,13 @@
 from fastapi import APIRouter, Depends
-from fastapi.exceptions import HTTPException
-from sqlalchemy.future import select
+from sqlalchemy.orm import Session
 
-from db import User
 from db.engine import get_async_session
-from routers.schemes import UserRegisterScheme
+from db.models import User
 
-router = APIRouter(
-    tags=['Регистрация пользователя']
-)
+router = APIRouter()
 
-@router.post('/register', response_model=UserRegisterScheme, )
-async def register_user(user: UserRegisterScheme,session = Depends(get_async_session)):
-    q = select(User).where(User.email == user.email)
 
-    u = (await session.execute(q)).scalars().first()
-    if u is not None:
-        raise HTTPException(status_code=400, detail='This email already is registered!')
-
-    return user
+@router.get('/get_user/{id}/',
+            name='Получает информацию о пользователе по id')
+def get_unit(id: int, session: Session = Depends(get_async_session)):
+    user = session.query(User).get(id)
