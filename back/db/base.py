@@ -1,4 +1,6 @@
-from sqlalchemy.orm import as_declarative
+import re
+
+from sqlalchemy.orm import as_declarative, declared_attr
 from sqlalchemy import Column, Integer, MetaData
 
 __all__ = ['Base']
@@ -20,3 +22,8 @@ metadata = MetaData(naming_convention=convention)
 @as_declarative(metadata=metadata)
 class Base:
     id = Column(Integer, primary_key=True, index=True)
+
+    @declared_attr
+    def __tablename__(cls) -> str:
+        name_list = re.findall(r"[A-Z][a-z\d]*", cls.__name__)
+        return "_".join(name_list).lower()
