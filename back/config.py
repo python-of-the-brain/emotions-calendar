@@ -1,5 +1,7 @@
 from functools import lru_cache
-from pydantic import BaseSettings, Field
+from typing import Optional
+
+from pydantic import BaseSettings, Field, PostgresDsn, validator
 
 
 
@@ -8,7 +10,26 @@ class Settings(BaseSettings):
     DEBUG: bool = Field(default=True)
     VERSION: str = Field(default='0.0.1')
 
+    POSTGRES_DB: str = Field(default='dev')
+    POSTGRES_USER: str = Field(default='user')
+    POSTGRES_PASSWORD: str = Field(default='secret')
+    POSTGRES_HOST: str = Field(default='localhost')
+    POSTGRES_PORT: str = Field(default='5432')
 
+    SQLALCHEMY_URL: Optional[PostgresDsn] = None
+
+    @validator('SQLALCHEMY_URL', pre=True)
+    def get_sqlalchemy_url(cls, v, values): 
+        if isinstance(v, str):
+            return v
+        return PostgresDsn.build(
+            scheme='postgresql+asyncpg',
+            user=values.get('POSTGRES_USER'),
+            password=values.get('POSTGRES_PASSWORD'),
+            host=values.get('POSTGRES_HOST'),
+            port=values.get('POSTGRES_PORT'),
+            path=f'/{values.get("POSTGRES_DB")}',
+        )
 
 
 @lru_cache
