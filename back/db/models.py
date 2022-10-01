@@ -23,13 +23,14 @@ class User(SQLAlchemyBaseUserTable, Base):
     posts = relationship('Post', back_populates='user')
     comments = relationship('Comment', back_populates='user')
     statuses = relationship('Status', back_populates='user')
-
+    calendar_days = relationship('CalendarDay', back_populates='user')
 
 
 class Post(Base):
     user_id = Column(ForeignKey('user.id'), index=True, nullable=False)
     emotion_id = Column(ForeignKey('emotion.id'), index=True, nullable=True)
 
+    comments = relationship('Comment', relationship='post')
     user = relationship('User', back_populates='posts')
     emotion = relationship('Emotion')
 
