@@ -14,3 +14,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_HOST=${POSTGRES_HOST}
+
+  adminer:
+    image: adminer
+    restart: always
+    ports: 
+      - 8081:8080
