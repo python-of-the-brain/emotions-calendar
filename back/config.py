@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     DEBUG: bool = Field(default=True)
     VERSION: str = Field(default='0.0.1')
 
+    SECRET: str = Field(default='secret')
+
     POSTGRES_DB: str = Field(default='dev')
     POSTGRES_USER: str = Field(default='user')
     POSTGRES_PASSWORD: str = Field(default='secret')

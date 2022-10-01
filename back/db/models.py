@@ -1,12 +1,15 @@
 import datetime
 
-from fastapi_users.db import SQLAlchemyBaseUserTable
+from fastapi import Depends
+from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
 from sqlalchemy import Column, Date, ForeignKey, String
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship 
 
 from db.base import Base
+from db.engine import get_async_session
 
-__all__ = ['User', 'Emotion', 'Base', 'Post', 'CalendarDay', 'Comment', 'Status']
+__all__ = ['User', 'Emotion', 'Base', 'Post', 'CalendarDay', 'Comment', 'Status', 'get_user_db']
 
 
 class Emotion(Base):
@@ -60,3 +63,6 @@ class Status(Base):
 
     user = relationship('User', back_populates='statuses')
     
+
+async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    yield SQLAlchemyUserDatabase(session, User)
