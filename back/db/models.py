@@ -26,7 +26,6 @@ class User(TimestampMixin, IsClosedMixin, SQLAlchemyBaseUserTable, Base):
     statuses = relationship('Status', back_populates='user')
     calendar_days = relationship('CalendarDay', back_populates='user')
 
-
 class Post(TimestampMixin, IsClosedMixin, Base):
     user_id = Column(ForeignKey('user.id'), index=True, nullable=False)
     emotion_id = Column(ForeignKey('emotion.id'), index=True, nullable=True)
@@ -35,6 +34,7 @@ class Post(TimestampMixin, IsClosedMixin, Base):
 
     comments = relationship('Comment', back_populates='post')
     user = relationship('User', back_populates='posts')
+    comments = relationship('Comment', back_populates='post')
     emotion = relationship('Emotion')
 
 
