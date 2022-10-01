@@ -32,6 +32,7 @@ class Settings(BaseSettings):
             path=f'/{values.get("POSTGRES_DB")}',
         )
 
+    MONKEY_LEARN_API: str 
 
 @lru_cache
 def get_settings() -> Settings:
