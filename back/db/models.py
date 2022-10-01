@@ -33,7 +33,7 @@ class Post(TimestampMixin, IsClosedMixin, Base):
     title = Column(String(256), index=True, nullable=False)
     content = Column(String(2048), index=True, nullable=False)
 
-    comments = relationship('Comment', relationship='post')
+    comments = relationship('Comment', back_populates='post')
     user = relationship('User', back_populates='posts')
     emotion = relationship('Emotion')
 
