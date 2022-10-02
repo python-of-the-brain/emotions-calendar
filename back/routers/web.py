@@ -45,9 +45,23 @@ async def register_route(request: Request):
 
 @web_router.get('/search', response_class=HTMLResponse)
 async def search_route(request: Request):
-    return templates.TemplateResponse('search.html', context={'request': request})
+    context = {
+        'request': request,
+        'index_url': request.app.url_path_for('index_route'),
+        'search_url': request.app.url_path_for('search_route'),
+        'login_url': request.app.url_path_for('login_route'),
+        'register_url': request.app.url_path_for('register_route'),
+    }
+    return templates.TemplateResponse('search.html', context=context)
 
 
 @web_router.get('/profile/{user_id}', response_class=HTMLResponse)
 async def profile_route(request: Request):
-    return templates.TemplateResponse('profile.html', context={'request': request})
+    context = {
+        'request': request,
+        'index_url': request.app.url_path_for('index_route'),
+        'search_url': request.app.url_path_for('search_route'),
+        'login_url': request.app.url_path_for('login_route'),
+        'register_url': request.app.url_path_for('register_route'),
+    }
+    return templates.TemplateResponse('profile.html', context=context)
