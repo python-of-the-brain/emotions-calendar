@@ -50,7 +50,7 @@ def get_application() -> FastAPI:
     )
     application.include_router(
         fastapi_users.get_auth_router(auth_backend),
-        prefix="/auth",
+        prefix="/auth/jwt",
         tags=["auth"],
     )
     # TODO email verification
