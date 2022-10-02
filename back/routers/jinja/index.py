@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 
 from controllers.jinja import templates
 
-web_router = APIRouter(default_response_class=HTMLResponse, prefix='/web')
+web_router = APIRouter(default_response_class=HTMLResponse, prefix='/web', include_in_schema=False)
 
 
 @web_router.get('/')
