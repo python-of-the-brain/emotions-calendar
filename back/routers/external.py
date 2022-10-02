@@ -21,7 +21,7 @@ async def post_translate(
 
 @external_api_router.post(path='/classify', response_model=MonkeyLearnResult)
 async def post_classify(
-    text: str =Query(
+    text: str = Query(
         default='Happy New Year!', 
         min_length=5,
         max_length=1000,

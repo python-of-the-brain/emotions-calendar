@@ -4,7 +4,7 @@ from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
 from sqlalchemy import Boolean, Column, Date, ForeignKey, String
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relationship 
+from sqlalchemy.orm import relation, relationship 
 
 from db.base import Base
 from db.engine import get_async_session
@@ -25,6 +25,13 @@ class User(TimestampMixin, IsClosedMixin, SQLAlchemyBaseUserTable, Base):
     comments = relationship('Comment', back_populates='user')
     statuses = relationship('Status', back_populates='user')
     calendar_days = relationship('CalendarDay', back_populates='user')
+
+    favourite_users = relationship('User', secondary='favourite_user')
+
+
+class FavouriteUser(Base):
+    user_id = Column(ForeignKey('user.id'), index=True, nullable=False)
+    favourite_user_id = Column(ForeignKey('user.id'), index=True, nullable=False)
 
 
 class Post(TimestampMixin, IsClosedMixin, Base):
