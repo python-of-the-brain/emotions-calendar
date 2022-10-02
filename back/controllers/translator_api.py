@@ -9,11 +9,11 @@ from config import get_settings
 class TranslatorAPI:
     def __init__(self):
         settings = get_settings()
-        self.TRANSLATOR_URL = settings.TRANSLATOR_URL
+        self.TRANSLATER_URL = settings.TRANSLATER_URL
 
     def _get_translate(self, text: str, from_: str = 'ru', to: str = 'en') -> Optional[Dict]:
         result = requests.post(
-            url=self.TRANSLATOR_URL,
+            url=self.TRANSLATER_URL,
             json={
                 "from": from_,
                 "to": to,

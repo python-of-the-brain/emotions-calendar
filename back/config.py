@@ -34,13 +34,13 @@ class Settings(BaseSettings):
 
     MONKEY_LEARN_API: str
 
-    TRANSLATOR_SCHEME: str = Field(default='http')
-    TRANSLATOR_HOST: str = Field(default='127.0.0.1')
-    TRANSLATOR_PORT: str = Field(default=8082)
+    TRANSLATER_SCHEME: str = Field(default='http')
+    TRANSLATER_HOST: str = Field(default='127.0.0.1')
+    TRANSLATER_PORT: str = Field(default=8082)
 
     @property
-    def TRANSLATOR_URL(self) -> str:
-        return f'{self.TRANSLATOR_SCHEME}://{self.TRANSLATOR_HOST}:{self.TRANSLATOR_PORT}/v1/translate'
+    def TRANSLATER_URL(self) -> str:
+        return f'{self.TRANSLATER_SCHEME}://{self.TRANSLATER_HOST}:{self.TRANSLATER_PORT}/v1/translate'
 
 
 @lru_cache
