@@ -15,6 +15,7 @@ async def index_route(request: Request):
         'search_url': request.app.url_path_for('search_route'),
         'login_url': request.app.url_path_for('login_route'),
         'register_url': request.app.url_path_for('register_route'),
+        'profile_url': request.app.url_path_for('profile_route', 1),
     }
     return templates.TemplateResponse("index.html", context=context)
 
@@ -27,6 +28,7 @@ async def login_route(request: Request):
         'search_url': request.app.url_path_for('search_route'),
         'login_url': request.app.url_path_for('login_route'),
         'register_url': request.app.url_path_for('register_route'),
+        'profile_url': request.app.url_path_for('profile_route', 1),
     }
     return templates.TemplateResponse("login.html", context=context)
 
@@ -39,6 +41,7 @@ async def register_route(request: Request):
         'search_url': request.app.url_path_for('search_route'),
         'login_url': request.app.url_path_for('login_route'),
         'register_url': request.app.url_path_for('register_route'),
+        'profile_url': request.app.url_path_for('profile_route', 1),
     }
     return templates.TemplateResponse('register.html', context=context)
 
@@ -51,6 +54,7 @@ async def search_route(request: Request):
         'search_url': request.app.url_path_for('search_route'),
         'login_url': request.app.url_path_for('login_route'),
         'register_url': request.app.url_path_for('register_route'),
+        'profile_url': request.app.url_path_for('profile_route', 1),
     }
     return templates.TemplateResponse('search.html', context=context)
 
@@ -63,5 +67,6 @@ async def profile_route(request: Request):
         'search_url': request.app.url_path_for('search_route'),
         'login_url': request.app.url_path_for('login_route'),
         'register_url': request.app.url_path_for('register_route'),
+        'profile_url': request.app.url_path_for('profile_route', 1),
     }
     return templates.TemplateResponse('profile.html', context=context)
