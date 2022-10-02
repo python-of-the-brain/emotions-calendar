@@ -55,10 +55,10 @@ jQuery(document).ready(function($) {
 		var content=$('textarea[name=post_content]').val();
 		var private=$('input[name=private]').prop('checked');
 		var emotion=$('.active_emo').attr('id').slice(3);
-		alert(title);
-		alert(content);
-		alert(private);
-		alert(emotion);
+		// alert(title);
+		// alert(content);
+		// alert(private);
+		// alert(emotion);
 		$('#add_post_form').removeClass('modal-open');
         $('.modal-background').removeClass('modal-open');
         setTimeout(()=>$('.modal-background').removeClass('z-modal'),1000);
@@ -110,7 +110,7 @@ jQuery(document).ready(function($) {
 		$.post('/auth/jwt/login', data).done((response) => {
 			// window.location.href= '/web/register';
 			$.get('/users/me').done((response) => {
-				alert(response.data.id);
+				// alert(response.data.id);
 				window.location.href= '/web/profile/'+response.data.id;
 			});
 		});
