@@ -98,4 +98,21 @@ jQuery(document).ready(function($) {
         $('.modal-background').addClass('z-modal');
         $('.modal-background').addClass('modal-open');
 	})
+	$('#sign_in').on('click',function (){
+		var username=$('input[name=username]').val();
+		var password=$('input[name=password]').val();
+
+		var data = {
+			"username": username,
+			"password": password
+		}
+		window.sadfasdf = false;
+		$.post('/auth/jwt/login', data).done((response) => {
+			// window.location.href= '/web/register';
+			$.get('/users/me').done((response) => {
+				alert(response.data.id);
+				window.location.href= '/web/profile/'+response.data.id;
+			});
+		});
+	})
 })
