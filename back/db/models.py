@@ -4,7 +4,7 @@ from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
 from sqlalchemy import Column, Date, ForeignKey, String
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relationship 
+from sqlalchemy.orm import relationship
 
 from db.base import Base
 from db.engine import get_async_session
@@ -15,7 +15,7 @@ __all__ = ['User', 'Emotion', 'Base', 'Post', 'CalendarDay', 'Comment', 'Status'
 
 class Emotion(Base):
     name = Column(String(64), index=True, nullable=False)
-    src = Column(String(512), nullable=False) 
+    src = Column(String(512), nullable=False)
 
 
 class User(TimestampMixin, IsClosedMixin, SearchMixin, SQLAlchemyBaseUserTable, Base):
@@ -29,13 +29,13 @@ class User(TimestampMixin, IsClosedMixin, SearchMixin, SQLAlchemyBaseUserTable, 
     @property
     def url(self) -> str:
         return f'/users/{self.id}/profile'
-    favourite_users = relationship('User', secondary='favourite_user')
+
+    favourite_users = relationship('User', secondary='favourite_user', foreign_keys='FavouriteUser.favourite_user_id')
 
 
 class FavouriteUser(Base):
     user_id = Column(ForeignKey('user.id'), index=True, nullable=False)
     favourite_user_id = Column(ForeignKey('user.id'), index=True, nullable=False)
-
 
 
 class Post(TimestampMixin, SearchMixin, IsClosedMixin, Base):
@@ -81,7 +81,7 @@ class Status(TimestampMixin, IsClosedMixin, Base):
     emotion_id = Column(ForeignKey('emotion.id'), index=True, nullable=True)
 
     user = relationship('User', back_populates='statuses')
-    
+
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)
