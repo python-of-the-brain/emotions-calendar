@@ -14,7 +14,7 @@ from routers.api.comments import router as comment_router
 from routers.api.search import router as search_router
 from routers.api.status import router as status_router
 from routers.api.profile import router as profile_router
-from routers.jinja import login_web_router
+from routers.jinja import web_router
 
 
 def include_routers(app: FastAPI) -> None:
@@ -23,12 +23,8 @@ def include_routers(app: FastAPI) -> None:
     for router in api_routers:
         api.include_router(router)
     app.include_router(api)
+    app.include_router(web_router)
 
-    web = APIRouter(prefix='/web')
-    web_routers = [login_web_router]
-    for router in web_routers:
-        web.include_router(router)
-    app.include_router(web)
 
 def get_application() -> FastAPI:
     """AppFactory"""

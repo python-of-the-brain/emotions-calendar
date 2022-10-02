@@ -1,1 +1,1 @@
-from routers.jinja.login import login_web_router
+from routers.jinja.index import web_router

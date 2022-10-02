@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="header">
+			<h1><a href="{{ index_url }}">EmotionC</a></h1>
+			<ul>
+				<li><a class="b" href="{{ register_url }}">Регистрация</a></li>
+				<li><a class="b" href="{{ login_url }}">Войти</a></li>
+			</ul>
+			</div>
+		</div>
+	</div>
+	</div>
+	</header>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1 class="h1_main auth">Вход</h1>
+				<div class="auth_div">
+				<input class="input_main" type="email" name="Email" placeholder="Email">
+				<input class="input_main" type="password" name="username" placeholder="Пароль">
+				<div>
+					<input type="checkbox" name="remember" class="form-check-input" checked></input>
+					<label class="lbl_check">Запомнить меня</label>
+				</div>
+				<button class="btn_main1" id="sign_in">Войти</button>
+				<label>Еще нет аккаунта? <a href="{{ register_url }}">Регистрация</a></label>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
