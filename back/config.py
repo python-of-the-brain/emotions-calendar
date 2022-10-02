@@ -34,7 +34,14 @@ class Settings(BaseSettings):
 
     MONKEY_LEARN_API: str 
 
+    TRANSLATOR_SCHEME: str = Field(default='http')
+    TRANSLATOR_HOST: str = Field(default='127.0.0.1')
+    TRANSLATOR_PORT: str = Field(default=8082)
+
+    @property
+    def TRANSLATOR_URL(self) -> str:
+        return f'{self.TRANSLATOR_SCHEME}://{self.TRANSLATOR_HOST}:{self.TRANSLATOR_PORT}/v1/translate'
+
 @lru_cache
 def get_settings() -> Settings:
-
-    return Settings(_env_file='../.env')
+    return Settings()
