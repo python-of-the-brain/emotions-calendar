@@ -55,7 +55,6 @@ services:
       - db
       - translater
   nginx:
-    container_name: 'nginx'
     build: ./nginx
     ports:
       - "80:80"
