@@ -11,7 +11,7 @@ from routers.shemas import PostCreateScheme, PostUpdateScheme, PostPatchScheme, 
 from db.engine import get_async_session
 from db.models import Post, User, Comment
 
-router = APIRouter()
+router = APIRouter(tags=['Посты'])
 
 
 @router.get('/user/{user_id}/posts/{post_id}/',

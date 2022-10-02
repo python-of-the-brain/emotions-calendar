@@ -1,27 +1,25 @@
-from fastapi import FastAPI, HTTPException
 import uvicorn
 from fastapi import FastAPI, HTTPException
-from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi_pagination import add_pagination
 
 from config import get_settings
-from routers import external_api_router
 from controllers.users import fastapi_users, auth_backend
 from errors import http_exception_handler
+from routers import external_api_router
 
-
-def include_routers(app: FastAPI):
-    routers = [external_api_router]
-    for router in routers:
-        app.include_router(router)
 from routers.shemas import UserRead, UserCreate, UserUpdate
-from routers.test import router as test_router
 from routers.post import router as post_router
 from routers.comments import router as comment_router
 from routers.search import router as search_router
 from routers.status import router as status_router
 from routers.profile import router as profile_router
+
+
+def include_routers(app: FastAPI):
+    routers = [external_api_router, post_router, comment_router, search_router, status_router, profile_router]
+    for router in routers:
+        app.include_router(router)
 
 
 def get_application() -> FastAPI:
@@ -61,13 +59,6 @@ def get_application() -> FastAPI:
         tags=["users"],
     )
 
-    application.include_router(router=test_router)
-    application.include_router(router=post_router)
-    application.include_router(router=comment_router)
-    application.include_router(router=search_router)
-    application.include_router(router=status_router)
-    application.include_router(router=profile_router)
-
     add_pagination(application)
     include_routers(app=application)
 
@@ -75,7 +66,6 @@ def get_application() -> FastAPI:
 
 
 app = get_application()
-
 
 if __name__ == '__main__':
     app = get_application()

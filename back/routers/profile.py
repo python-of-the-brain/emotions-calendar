@@ -14,7 +14,7 @@ from db.models import User, Status, Post, CalendarDay, Comment
 from routers.shemas import StatusScheme, ProfileScheme, PostReadScheme, CurrentStatusScheme, \
     CalendarDayScheme, UserReadForComment
 
-router = APIRouter()
+router = APIRouter(tags=['Профиль'])
 
 
 @router.get('/user/{user_id}/profile/',

@@ -9,7 +9,7 @@ from db.engine import get_async_session
 from db.models import User, Status, Emotion
 from routers.shemas import StatusScheme
 
-router = APIRouter()
+router = APIRouter(tags=['Статусы'])
 
 
 @router.get('/users/{user_id}/current_status/')

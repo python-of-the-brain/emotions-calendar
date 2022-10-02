@@ -11,7 +11,7 @@ from db.engine import get_async_session
 from db.models import Post, User
 from routers.shemas import GetSearchObjs, ShortObj
 
-router = APIRouter()
+router = APIRouter(tags=['Поиск'])
 
 
 @router.get('/search/')

@@ -1,5 +1,6 @@
 import re
 from typing import Dict, Optional
+
 import requests
 
 from config import get_settings

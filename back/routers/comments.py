@@ -7,7 +7,7 @@ from db.engine import get_async_session
 from db.models import Post, User, Comment
 from routers.shemas import CommentPostScheme, CommentShortScheme
 
-router = APIRouter()
+router = APIRouter(tags=['Комментарии'])
 
 
 @router.post('/users/{user_id}/posts/{post_id}/comments')
