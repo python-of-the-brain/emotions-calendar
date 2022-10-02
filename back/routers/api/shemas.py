@@ -210,6 +210,21 @@ class CalendarDayScheme(BaseModel):
         orm_mode = True
 
 
+class FavoriteScheme(BaseModel):
+    user_id: int
+    favourite_user_id: int
+
+    class Config:
+        orm_mode = True
+
+
+class FavoritesScheme(BaseModel):
+    item: List[FavoriteScheme]
+
+    class Config:
+        orm_mode = True
+
+
 class ProfileScheme(BaseModel):
     user: UserReadForComment
     posts: List[PostReadScheme]
