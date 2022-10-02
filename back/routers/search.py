@@ -1,6 +1,5 @@
 from typing import List
 
-import loguru
 from fastapi import APIRouter, Depends, Query
 from pydantic import parse_obj_as
 from sqlalchemy import or_, desc

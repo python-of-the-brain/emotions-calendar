@@ -37,6 +37,7 @@ class UserLoginScheme(BaseModel):
 
 class UserRead(schemas.BaseUser[uuid.UUID]):
     email: EmailStr
+    is_closed: bool = Field(default=False)
     username: str = Field(min_length=3, max_length=64)
 
 
@@ -51,6 +52,7 @@ class UserReadForComment(BaseModel):
 
 class UserCreate(schemas.BaseUserCreate):
     email: EmailStr
+    is_closed: bool = Field(default=False)
     username: str = Field(min_length=3, max_length=64)
     password: str = Field(min_length=8, max_length=25)
 
@@ -66,6 +68,9 @@ class UserCreate(schemas.BaseUserCreate):
 class UserUpdate(schemas.BaseUserUpdate):
     email: EmailStr
     username: str = Field(min_length=3, max_length=64)
+
+    class Config:
+        orm_mode = True
 
 
 class PostCreateScheme(BaseModel):
@@ -178,3 +183,39 @@ class PostUpdateScheme(BaseModel):
 
 class PostStatisticResponse(BaseModel):
     items: List[PostCreateScheme]
+
+
+class CurrentStatusScheme(BaseModel):
+    value: Optional[str]
+    emotion_id: Optional[int]
+
+    class Config:
+        orm_mode = True
+
+
+class StatusScheme(BaseModel):
+    value: str
+    emotion_id: int = Field(gt=0)
+
+    class Config:
+        orm_mode = True
+
+
+class CalendarDayScheme(BaseModel):
+    day: datetime.date
+    user_id: int
+    emotion_id: Optional[int]
+
+    class Config:
+        orm_mode = True
+
+
+class ProfileScheme(BaseModel):
+    user: UserReadForComment
+    posts: List[PostReadScheme]
+    current_status: CurrentStatusScheme
+    previous_statuses: List[StatusScheme]
+    calendar_days: List[CalendarDayScheme]
+
+    class Config:
+        orm_mode = True

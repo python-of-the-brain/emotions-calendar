@@ -14,7 +14,7 @@ from db.models import Post, User, Comment
 router = APIRouter()
 
 
-@router.get('/user/{user_id}/posts/{post_id}',
+@router.get('/user/{user_id}/posts/{post_id}/',
             response_model=PostReadScheme,
             name='возвращает post пользователя по id')
 async def get_user_post(user_id: int, post_id: int, current_user: User = Depends(current_active_user),
@@ -44,7 +44,7 @@ async def get_user_post(user_id: int, post_id: int, current_user: User = Depends
     return PostReadScheme.from_orm(post)
 
 
-@router.get('/user/{user_id}/posts',
+@router.get('/user/{user_id}/posts/',
             response_model=LimitOffsetPage[PostShortScheme],
             name='возвращает posts пользователя')
 async def get_user_posts(
@@ -79,7 +79,7 @@ async def get_user_posts(
     )
 
 
-@router.post('/user/{user_id}/posts', name='создание поста')
+@router.post('/user/{user_id}/posts/', name='создание поста')
 async def get_user_posts(
         post_data: PostCreateScheme,
         user_id: int = Path(...),
@@ -95,7 +95,7 @@ async def get_user_posts(
     return PostShortScheme.from_orm(post)
 
 
-@router.patch('/users/{user_id}/posts/{post_id}', response_model=PostUpdateScheme)
+@router.patch('/users/{user_id}/posts/{post_id}/', response_model=PostUpdateScheme)
 async def patch_post(user_id: int, post_id: int,
                      post_data: PostPatchScheme,
                      current_user: User = Depends(current_active_user),
@@ -122,7 +122,7 @@ async def patch_post(user_id: int, post_id: int,
     return PostUpdateScheme.from_orm(post)
 
 
-@router.delete('/users/{user_id}/posts/{post_id}', response_model=PostUpdateScheme)
+@router.delete('/users/{user_id}/posts/{post_id}/', response_model=PostUpdateScheme)
 async def delete_post(user_id: int, post_id: int,
                       current_user: User = Depends(current_active_user),
                       session: AsyncSession = Depends(get_async_session)):

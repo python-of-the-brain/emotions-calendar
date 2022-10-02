@@ -12,6 +12,8 @@ from routers.test import router as test_router
 from routers.post import router as post_router
 from routers.comments import router as comment_router
 from routers.search import router as search_router
+from routers.status import router as status_router
+from routers.profile import router as profile_router
 
 
 def get_application() -> FastAPI:
@@ -55,6 +57,8 @@ def get_application() -> FastAPI:
     application.include_router(router=post_router)
     application.include_router(router=comment_router)
     application.include_router(router=search_router)
+    application.include_router(router=status_router)
+    application.include_router(router=profile_router)
 
     add_pagination(application)
 
