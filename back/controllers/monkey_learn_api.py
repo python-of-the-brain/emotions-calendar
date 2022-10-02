@@ -4,8 +4,8 @@ from pydantic import BaseModel, Extra, Field
 import requests
 from typing import Optional
 
-
 from config import get_settings
+
 
 class EmotionalState(str, enum.Enum):
     negative = 'Negative'
@@ -15,7 +15,7 @@ class EmotionalState(str, enum.Enum):
 
 class MonkeyLearnResult(BaseModel):
     confidence: float
-    name: EmotionalState =  Field(alias='tag_name')
+    name: EmotionalState = Field(alias='tag_name')
 
     class Config:
         use_enum_values = True
@@ -23,7 +23,6 @@ class MonkeyLearnResult(BaseModel):
 
 
 class MonkeyLearnAPI:
-
     HOST = 'https://api.monkeylearn.com'
     VERSION = 'v3'
     PATH = 'classifiers'

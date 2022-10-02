@@ -5,15 +5,12 @@ import requests
 from config import get_settings
 
 
-
 class TranslatorAPI:
     def __init__(self):
         settings = get_settings()
         self.TRANSLATOR_URL = settings.TRANSLATOR_URL
 
-    def _get_translate(self,  text: str, from_: str = 'ru', to: str = 'en') -> Optional[Dict]:
-        # text = text + '.' * (len(text) * 2)
-
+    def _get_translate(self, text: str, from_: str = 'ru', to: str = 'en') -> Optional[Dict]:
         result = requests.post(
             url=self.TRANSLATOR_URL,
             json={
@@ -34,6 +31,6 @@ class TranslatorAPI:
         for sentence in sentences:
             result = self._get_translate(text=sentence)
             if result is not None:
-                results.append(re.sub(r'\.+$','', result.get('result') ))
+                results.append(re.sub(r'\.+$', '', result.get('result')))
         print(results)
         return '. '.join(results)

@@ -2,9 +2,9 @@ import datetime
 
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
-from sqlalchemy import Boolean, Column, Date, ForeignKey, String
+from sqlalchemy import Column, Date, ForeignKey, String
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relation, relationship 
+from sqlalchemy.orm import relationship
 
 from db.base import Base
 from db.engine import get_async_session
