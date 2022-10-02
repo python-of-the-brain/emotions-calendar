@@ -10,7 +10,7 @@ from db.base import Base
 from db.engine import get_async_session
 from db.mixins import IsClosedMixin, TimestampMixin, SearchMixin
 
-__all__ = ['User', 'Emotion', 'Base', 'Post', 'CalendarDay', 'Comment', 'Status', 'get_user_db']
+__all__ = ['User', 'Emotion', 'Base', 'Post', 'CalendarDay', 'Comment', 'Status', 'get_user_db', 'FavouriteUser']
 
 
 class Emotion(Base):

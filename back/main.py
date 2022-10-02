@@ -7,19 +7,21 @@ from config import get_settings
 from controllers.users import fastapi_users, auth_backend
 from errors import http_exception_handler
 from routers import external_api_router
-
-from routers.api.shemas import UserRead, UserCreate, UserUpdate
-from routers.api.post import router as post_router
 from routers.api.comments import router as comment_router
-from routers.api.search import router as search_router
-from routers.api.status import router as status_router
+from routers.api.favourites import favourite_router
+from routers.api.post import router as post_router
 from routers.api.profile import router as profile_router
-from routers.jinja import web_router
+from routers.api.search import router as search_router
+from routers.api.shemas import UserRead, UserCreate, UserUpdate
+from routers.api.status import router as status_router
+from routers.web import web_router
 
 
 def include_routers(app: FastAPI) -> None:
     api = APIRouter(prefix='/api')
-    api_routers = [external_api_router, post_router, comment_router, search_router, status_router, profile_router]
+    api_routers = [external_api_router,
+                   post_router, comment_router, search_router,
+                   status_router, profile_router, favourite_router]
     for router in api_routers:
         api.include_router(router)
     app.include_router(api)
@@ -44,11 +46,11 @@ def get_application() -> FastAPI:
     application.include_router(
         fastapi_users.get_register_router(UserRead, UserCreate),
         prefix="/auth",
-        tags=["registration"],
+        tags=["auth"],
     )
     application.include_router(
         fastapi_users.get_auth_router(auth_backend),
-        prefix="/auth/jwt",
+        prefix="/auth",
         tags=["auth"],
     )
     # TODO email verification
@@ -63,9 +65,8 @@ def get_application() -> FastAPI:
         tags=["users"],
     )
 
-    add_pagination(application)
     include_routers(app=application)
-
+    add_pagination(application)
     return application
 
 

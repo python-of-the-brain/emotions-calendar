@@ -210,19 +210,15 @@ class CalendarDayScheme(BaseModel):
         orm_mode = True
 
 
-class FavoriteScheme(BaseModel):
-    user_id: int
+class FavouriteInputScheme(BaseModel):
     favourite_user_id: int
 
     class Config:
         orm_mode = True
 
 
-class FavoritesScheme(BaseModel):
-    item: List[FavoriteScheme]
-
-    class Config:
-        orm_mode = True
+class FavouriteOutputScheme(FavouriteInputScheme):
+    user_id: int
 
 
 class ProfileScheme(BaseModel):

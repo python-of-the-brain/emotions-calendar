@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, Path, HTTPException, Query
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from fastapi_pagination.limit_offset import LimitOffsetParams, LimitOffsetPage
-from sqlalchemy import select, desc
+from sqlalchemy import desc
+from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from starlette.responses import Response
@@ -66,12 +67,9 @@ async def get_user_posts(
     params = LimitOffsetParams(limit=limit, offset=offset)
 
     if user.is_superuser:
-        request = select(Post).where(Post.user_id == user_id).order_by(
-            desc(Post.created_at))
+        request = select(Post).where(Post.user_id == user_id).order_by(desc(Post.created_at))
     else:
-        request = select(Post).where(Post.user_id == user_id,
-                                     Post.is_closed.is_(False)).order_by(
-            desc(Post.created_at))
+        request = select(Post).where(Post.user_id == user_id, Post.is_closed.is_(False)).order_by(desc(Post.created_at))
 
     return await paginate(
         session,
