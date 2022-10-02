@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, APIRouter
 from fastapi.staticfiles import StaticFiles
 from fastapi_pagination import add_pagination
 
@@ -17,9 +17,11 @@ from routers.profile import router as profile_router
 
 
 def include_routers(app: FastAPI):
-    routers = [external_api_router, post_router, comment_router, search_router, status_router, profile_router]
-    for router in routers:
-        app.include_router(router)
+    api = APIRouter(prefix='/api')
+    api_routers = [external_api_router, post_router, comment_router, search_router, status_router, profile_router]
+    for router in api_routers:
+        api.include_router(router)
+    app.include_router(api)
 
 
 def get_application() -> FastAPI:
