@@ -19,3 +19,15 @@ class TimestampMixin:
 @declarative_mixin
 class IsClosedMixin:
     is_closed = Column(Boolean, default=False, index=True)
+
+
+@declarative_mixin
+class SearchMixin:
+
+    @property
+    def type_(self) -> str:
+        return self.__class__.__name__
+
+    @property
+    def url(self) -> str:
+        raise NotImplemented

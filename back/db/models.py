@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 
 from db.base import Base
 from db.engine import get_async_session
-from db.mixins import IsClosedMixin, TimestampMixin
+from db.mixins import IsClosedMixin, TimestampMixin, SearchMixin
 
 __all__ = ['User', 'Emotion', 'Base', 'Post', 'CalendarDay', 'Comment', 'Status', 'get_user_db']
 
@@ -18,24 +18,32 @@ class Emotion(Base):
     src = Column(String(512), nullable=False) 
 
 
-class User(TimestampMixin, IsClosedMixin, SQLAlchemyBaseUserTable, Base):
+class User(TimestampMixin, IsClosedMixin, SearchMixin, SQLAlchemyBaseUserTable, Base):
     username = Column(String(64), index=True, nullable=False)
 
-    posts = relationship('Post', back_populates='user')
+    posts = relationship('Post', back_populates='user', order_by='Post.created_at.desc()')
     comments = relationship('Comment', back_populates='user')
     statuses = relationship('Status', back_populates='user')
     calendar_days = relationship('CalendarDay', back_populates='user')
 
-class Post(TimestampMixin, IsClosedMixin, Base):
+    @property
+    def url(self) -> str:
+        return f'/users/{self.id}/profile'
+
+
+class Post(TimestampMixin, SearchMixin, IsClosedMixin, Base):
     user_id = Column(ForeignKey('user.id'), index=True, nullable=False)
     emotion_id = Column(ForeignKey('emotion.id'), index=True, nullable=True)
     title = Column(String(256), index=True, nullable=False)
     content = Column(String(2048), index=True, nullable=False)
 
-    comments = relationship('Comment', back_populates='post')
+    comments = relationship('Comment', back_populates='post', order_by='Comment.created_at.desc()')
     user = relationship('User', back_populates='posts')
-    comments = relationship('Comment', back_populates='post')
     emotion = relationship('Emotion')
+
+    @property
+    def url(self) -> str:
+        return f'/users/{self.user_id}/posts/{self.id}/'
 
 
 class CalendarDay(Base):

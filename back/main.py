@@ -2,14 +2,16 @@ import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi_pagination import add_pagination
 
 from config import get_settings
 from controllers.users import fastapi_users, auth_backend
 from errors import http_exception_handler
 from routers.shemas import UserRead, UserCreate, UserUpdate
-from routers.users import router as user_router
 from routers.test import router as test_router
 from routers.post import router as post_router
+from routers.comments import router as comment_router
+from routers.search import router as search_router
 
 
 def get_application() -> FastAPI:
@@ -27,7 +29,6 @@ def get_application() -> FastAPI:
 
     application.mount("/static", StaticFiles(directory="static"), name="static")
 
-    application.include_router(router=user_router, prefix='/users')
     application.include_router(
         fastapi_users.get_register_router(UserRead, UserCreate),
         prefix="/auth",
@@ -52,6 +53,10 @@ def get_application() -> FastAPI:
 
     application.include_router(router=test_router)
     application.include_router(router=post_router)
+    application.include_router(router=comment_router)
+    application.include_router(router=search_router)
+
+    add_pagination(application)
 
     return application
 
