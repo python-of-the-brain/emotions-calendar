@@ -1,8 +1,8 @@
 import enum
 from loguru import logger
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, Extra, Field
 import requests
-from typing import Optional, List
+from typing import Optional
 
 
 from config import get_settings
@@ -15,7 +15,7 @@ class EmotionalState(str, enum.Enum):
 
 class MonkeyLearnResult(BaseModel):
     confidence: float
-    tag_name: EmotionalState
+    name: EmotionalState =  Field(alias='tag_name')
 
     class Config:
         use_enum_values = True
@@ -32,14 +32,13 @@ class MonkeyLearnAPI:
 
     def __init__(self) -> None:
         settings = get_settings()
-
         self.token = settings.MONKEY_LEARN_API
 
     @property
     def API_URL(self) -> str:
         return f'{self.HOST}/{self.VERSION}/{self.PATH}/{self.MODEL}/{self.METHOD}/'
 
-    def get(self, text: str) -> Optional[EmotionalState]:
+    def get_estimate(self, text: str) -> Optional[MonkeyLearnResult]:
         result = requests.post(
             url=self.API_URL,
             headers={'Authorization': f'Token {self.token}'},

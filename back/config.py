@@ -33,6 +33,7 @@ class Settings(BaseSettings):
         )
 
     MONKEY_LEARN_API: str 
+    TRANSLATOR_URL: str
 
 @lru_cache
 def get_settings() -> Settings:
