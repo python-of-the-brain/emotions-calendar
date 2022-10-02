@@ -4,8 +4,6 @@ import uvicorn
 from config import get_settings
 from errors import http_exception_handler
 
-from routers.users import router as user_router
-
 
 def get_application() -> FastAPI:
     """AppFactory"""
@@ -19,8 +17,6 @@ def get_application() -> FastAPI:
         description='Тот самый хакатон',
     )
     application.add_exception_handler(HTTPException, http_exception_handler)
-
-    application.include_router(router=user_router, prefix='/users')
 
     return application
 
