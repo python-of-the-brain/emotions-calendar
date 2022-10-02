@@ -60,7 +60,7 @@ async def search_route(request: Request):
 
 
 @web_router.get('/profile/{user_id}', response_class=HTMLResponse)
-async def profile_route(request: Request):
+async def profile_route(user_id: int, request: Request):
     context = {
         'request': request,
         'index_url': request.app.url_path_for('index_route'),
