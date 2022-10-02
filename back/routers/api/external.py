@@ -44,6 +44,6 @@ async def post_estimator(text: str = Query(default='', title='Текст для 
     мы делаем вывод об эмоциях пользователя.
     """
     estimator = Estimator()
-    estimator.get_estimate(text=text)
-    return TranslateResponse(text=estimator)
+    result = estimator.get_estimate(text=text)
+    return TranslateResponse(result=result)
 
