@@ -12,7 +12,7 @@ class TranslatorAPI:
         self.TRANSLATOR_URL = settings.TRANSLATOR_URL
 
     def _get_translate(self,  text: str, from_: str = 'ru', to: str = 'en') -> Optional[Dict]:
-        text = text + '.' * (len(text) * 2)
+        # text = text + '.' * (len(text) * 2)
 
         result = requests.post(
             url=self.TRANSLATOR_URL,

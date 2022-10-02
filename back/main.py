@@ -2,7 +2,13 @@ from fastapi import FastAPI, HTTPException
 import uvicorn
 
 from config import get_settings
+from routers.external import external_api_router
 from errors import http_exception_handler
+
+def include_routers(app: FastAPI):
+    routers = [external_api_router]
+    for router in routers:
+        app.include_router(router)
 
 
 def get_application() -> FastAPI:
@@ -17,6 +23,8 @@ def get_application() -> FastAPI:
         description='Тот самый хакатон',
     )
     application.add_exception_handler(HTTPException, http_exception_handler)
+
+    include_routers(app=application)
 
     return application
 
