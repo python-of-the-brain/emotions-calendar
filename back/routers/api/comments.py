@@ -1,17 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 from starlette.responses import Response
 
+from controllers.estimator import Estimator
 from controllers.users import current_active_user
 from db.engine import get_async_session
-from db.models import Post, User, Comment
+from db.models import Post, User, Comment, Emotion
 from routers.api.shemas import CommentPostScheme, CommentShortScheme
 
 router = APIRouter(tags=['Комментарии'])
 
 
-@router.post('/users/{user_id}/posts/{post_id}/comments')
-async def get_comments(
+@router.post('/users/{user_id}/posts/{post_id}/comments', response_model=CommentShortScheme)
+async def create_comments(
         user_id: int,
         post_id: int,
         comment_data: CommentPostScheme,
@@ -29,12 +31,17 @@ async def get_comments(
     post = await session.get(Post, post_id)
 
     if post is None:
-        raise HTTPException(status_code=404, detail='post not found')
+        raise HTTPException(status_code=404, detail='Post not found!')
 
     if post.is_closed and not user.is_superuser and post.user_id != user.id:
         raise HTTPException(status_code=403, detail='Access denied')
 
     comment = Comment(**comment_data.dict(), user_id=user.id, post_id=post_id)
+
+    if comment.emotion_id is None:
+        estimator = Estimator()
+        value = estimator.get_estimate(comment.content)
+        post.emotion = (await session.execute(select(Emotion).where(Emotion.name == value))).scalars().first()
 
     session.add(comment)
     await session.commit()

@@ -6,17 +6,18 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from starlette.responses import Response
 
+from controllers.estimator import Estimator
 from controllers.users import current_active_user
 from routers.api.shemas import PostCreateScheme, PostUpdateScheme, PostPatchScheme, PostReadScheme, PostShortScheme
 from db.engine import get_async_session
-from db.models import Post, User, Comment
+from db.models import Post, User, Comment, Emotion
 
 router = APIRouter(tags=['Посты'])
 
 
 @router.get('/user/{user_id}/posts/{post_id}/',
             response_model=PostReadScheme,
-            name='возвращает post пользователя по id')
+            name='Возвращает полную информацию о посте пользователя по ID')
 async def get_user_post(user_id: int, post_id: int, current_user: User = Depends(current_active_user),
                         session: AsyncSession = Depends(get_async_session)
                         ):
@@ -46,7 +47,7 @@ async def get_user_post(user_id: int, post_id: int, current_user: User = Depends
 
 @router.get('/user/{user_id}/posts/',
             response_model=LimitOffsetPage[PostShortScheme],
-            name='возвращает posts пользователя')
+            name='Возвращает список постов пользователя')
 async def get_user_posts(
         user_id: int,
         limit: int = Query(default=50, lt=101, gt=0),
@@ -79,7 +80,10 @@ async def get_user_posts(
     )
 
 
-@router.post('/user/{user_id}/posts/', name='создание поста')
+@router.post('/user/{user_id}/posts/',
+             name='Создает новый пост у пользователя',
+             response_model=PostShortScheme,
+)
 async def get_user_posts(
         post_data: PostCreateScheme,
         user_id: int = Path(...),
@@ -89,6 +93,10 @@ async def get_user_posts(
     if current_user.id != user_id and not current_user.is_superuser:
         raise HTTPException(status_code=403, detail=f'{current_user.username} is\'t superuser or post author')
     post = Post(**post_data.dict(), user_id=user_id)
+    if post.emotion_id is None:
+        estimator = Estimator()
+        value = estimator.get_estimate(post.title + '. ' + post.content)
+        post.emotion = (await session.execute(select(Emotion).where(Emotion.name == value))).scalars().first()
     session.add(post)
     await session.commit()
     await session.refresh(post)
@@ -106,15 +114,20 @@ async def patch_post(user_id: int, post_id: int,
 
     new_data = post_data.dict(exclude_none=True)
     if not new_data:
-        raise HTTPException(status_code=400, detail=f'empty data')
+        raise HTTPException(status_code=400, detail=f'Empty new data')
     query = select(Post).where(Post.id == post_id, Post.user_id == user_id)
 
     post = (await session.execute(query)).scalars().first()
     if post is None:
-        raise HTTPException(status_code=404, detail='post not found')
+        raise HTTPException(status_code=404, detail='Post not found')
 
     for key in new_data:
         setattr(post, key, new_data[key])
+
+    if post.emotion_id is None:
+        estimator = Estimator()
+        value = estimator.get_estimate(post.title + '. ' + post.content)
+        post.emotion = (await session.execute(select(Emotion).where(Emotion.name == value))).scalars().first()
 
     session.add(post)
     await session.commit()

@@ -18,7 +18,7 @@ router = APIRouter(tags=['Профиль'])
 
 
 @router.get('/user/{user_id}/profile/',
-            name='возвращает всю информацию о пользователе')
+            name='Возвращает полный профиль пользователя', response_model=ProfileScheme)
 async def get_user_posts(
         user_id: int,
         user: User = Depends(current_active_user),

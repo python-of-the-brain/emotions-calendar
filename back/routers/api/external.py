@@ -1,5 +1,9 @@
+from typing import Optional
+
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
+
+from controllers.estimator import Estimator
 from controllers.monkey_learn_api import MonkeyLearnAPI, MonkeyLearnResult
 
 from controllers.translator_api import TranslatorAPI
@@ -31,3 +35,15 @@ async def post_classify(
         )
 ):
     return MonkeyLearnAPI().get_estimate(text=text)
+
+
+@external_api_router.post(path='/estimator', response_model=Optional[TranslateResponse])
+async def post_estimator(text: str = Query(default='', title='Текст для оценки эмоции')):
+    """
+    Запрос прогоняет текст через переводчик и модель оценивающую эмоциональный окрас текста, на основе которого
+    мы делаем вывод об эмоциях пользователя.
+    """
+    estimator = Estimator()
+    estimator.get_estimate(text=text)
+    return TranslateResponse(text=estimator)
+
