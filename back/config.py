@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     SQLALCHEMY_URL: Optional[PostgresDsn] = None
 
     @validator('SQLALCHEMY_URL', pre=True)
-    def get_sqlalchemy_url(cls, v, values): 
+    def get_sqlalchemy_url(cls, v, values):
         if isinstance(v, str):
             return v
         return PostgresDsn.build(
@@ -32,7 +32,7 @@ class Settings(BaseSettings):
             path=f'/{values.get("POSTGRES_DB")}',
         )
 
-    MONKEY_LEARN_API: str 
+    MONKEY_LEARN_API: str
 
     TRANSLATOR_SCHEME: str = Field(default='http')
     TRANSLATOR_HOST: str = Field(default='127.0.0.1')
@@ -41,6 +41,7 @@ class Settings(BaseSettings):
     @property
     def TRANSLATOR_URL(self) -> str:
         return f'{self.TRANSLATOR_SCHEME}://{self.TRANSLATOR_HOST}:{self.TRANSLATOR_PORT}/v1/translate'
+
 
 @lru_cache
 def get_settings() -> Settings:

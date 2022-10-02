@@ -4,7 +4,7 @@
     {% block head %}
     <meta content="text/html" charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <link href="{{ url_for('static', 'css/main.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='css/main.css') }}" rel="stylesheet">
     <title>{% block title %}EmotionC{% endblock %}</title>
     {% endblock %}
 </head>
@@ -13,8 +13,8 @@
 {% block footer %}
 	<footer>
 		<p><span><a href="https://tot-hackathon.ru">Тот самый хакатон</a></span> &#10095; <span>2022</span> &#10095;  <span>Python головного мозга</span> &#10095; <span><a href="https://t.me/natalenko_sergey">Сергей Наталенко</a></span>  <span><a href="https://t.me/Azyenika">Артём Соколов</a></span> <span><a href="https://t.me/itwasjoke">Андрей Васильев</a></span></p>
-		<script src="{{ url_for('static', 'js/jquery-3.6.1.min.js') }}"></script>
-		<script src="{{ url_for('static', 'js/script.js') }}"></script>
+		<script src="{{ url_for('static', path='js/jquery-3.6.1.min.js') }}"></script>
+		<script src="{{ url_for('static', path='js/script.js') }}"></script>
 	</footer>
 {% endblock %}
 

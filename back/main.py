@@ -28,8 +28,7 @@ def include_routers(app: FastAPI) -> None:
     web_routers = [login_web_router]
     for router in web_routers:
         web.include_router(router)
-    web.include_router(web)
-
+    app.include_router(web)
 
 def get_application() -> FastAPI:
     """AppFactory"""

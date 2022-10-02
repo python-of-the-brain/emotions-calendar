@@ -9,4 +9,4 @@ login_web_router = APIRouter()
 
 @login_web_router.get('/login', response_class=HTMLResponse)
 async def login_page(request: Request):
-    return templates.TemplateResponse("login.html")
+    return templates.TemplateResponse("base.html", context={'request': request})
