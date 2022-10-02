@@ -7,7 +7,7 @@ from sqlalchemy.orm import selectinload
 from starlette.responses import Response
 
 from controllers.users import current_active_user
-from routers.shemas import PostCreateScheme, PostUpdateScheme, PostPatchScheme, PostReadScheme, PostShortScheme
+from routers.api.shemas import PostCreateScheme, PostUpdateScheme, PostPatchScheme, PostReadScheme, PostShortScheme
 from db.engine import get_async_session
 from db.models import Post, User, Comment
 

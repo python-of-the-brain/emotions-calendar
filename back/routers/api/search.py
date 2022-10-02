@@ -9,7 +9,7 @@ from sqlalchemy.future import select
 from controllers.users import current_active_user
 from db.engine import get_async_session
 from db.models import Post, User
-from routers.shemas import GetSearchObjs, ShortObj
+from routers.api.shemas import GetSearchObjs, ShortObj
 
 router = APIRouter(tags=['Поиск'])
 

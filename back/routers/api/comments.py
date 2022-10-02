@@ -5,7 +5,7 @@ from starlette.responses import Response
 from controllers.users import current_active_user
 from db.engine import get_async_session
 from db.models import Post, User, Comment
-from routers.shemas import CommentPostScheme, CommentShortScheme
+from routers.api.shemas import CommentPostScheme, CommentShortScheme
 
 router = APIRouter(tags=['Комментарии'])
 

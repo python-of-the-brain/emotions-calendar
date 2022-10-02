@@ -8,20 +8,27 @@ from controllers.users import fastapi_users, auth_backend
 from errors import http_exception_handler
 from routers import external_api_router
 
-from routers.shemas import UserRead, UserCreate, UserUpdate
-from routers.post import router as post_router
-from routers.comments import router as comment_router
-from routers.search import router as search_router
-from routers.status import router as status_router
-from routers.profile import router as profile_router
+from routers.api.shemas import UserRead, UserCreate, UserUpdate
+from routers.api.post import router as post_router
+from routers.api.comments import router as comment_router
+from routers.api.search import router as search_router
+from routers.api.status import router as status_router
+from routers.api.profile import router as profile_router
+from routers.jinja import login_web_router
 
 
-def include_routers(app: FastAPI):
+def include_routers(app: FastAPI) -> None:
     api = APIRouter(prefix='/api')
     api_routers = [external_api_router, post_router, comment_router, search_router, status_router, profile_router]
     for router in api_routers:
         api.include_router(router)
     app.include_router(api)
+
+    web = APIRouter(prefix='/web')
+    web_routers = [login_web_router]
+    for router in web_routers:
+        web.include_router(router)
+    web.include_router(web)
 
 
 def get_application() -> FastAPI:
@@ -37,7 +44,7 @@ def get_application() -> FastAPI:
     )
     application.add_exception_handler(HTTPException, http_exception_handler)
 
-    application.mount("/static", StaticFiles(directory="static"), name="static")
+    application.mount("/static", StaticFiles(directory="frontend/static"), name="static")
 
     application.include_router(
         fastapi_users.get_register_router(UserRead, UserCreate),

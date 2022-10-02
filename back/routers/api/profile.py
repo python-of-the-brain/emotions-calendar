@@ -11,7 +11,7 @@ from sqlalchemy.orm import selectinload
 from controllers.users import current_active_user
 from db.engine import get_async_session
 from db.models import User, Status, Post, CalendarDay, Comment
-from routers.shemas import StatusScheme, ProfileScheme, PostReadScheme, CurrentStatusScheme, \
+from routers.api.shemas import StatusScheme, ProfileScheme, PostReadScheme, CurrentStatusScheme, \
     CalendarDayScheme, UserReadForComment
 
 router = APIRouter(tags=['Профиль'])

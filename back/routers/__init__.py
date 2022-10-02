@@ -1,1 +1,1 @@
-from routers.external import external_api_router
+from routers.api.external import external_api_router

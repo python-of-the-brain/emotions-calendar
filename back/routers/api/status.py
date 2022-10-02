@@ -7,7 +7,7 @@ from starlette.responses import Response
 from controllers.users import current_active_user
 from db.engine import get_async_session
 from db.models import User, Status, Emotion
-from routers.shemas import StatusScheme
+from routers.api.shemas import StatusScheme
 
 router = APIRouter(tags=['Статусы'])
 
